@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/kemaldemirgil/e-tracker#readme",
   "dependencies": {
+    "console.table": "^0.10.0",
     "inquirer": "^8.0.0",
     "mysql": "^2.18.1"
   }

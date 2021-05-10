@@ -10,7 +10,7 @@
 <p align = "center" ><img src="/images/start-eTracker.PNG"/></p>
 
 ### About:
-This is an employee managment system created to keep track of employees.
+This is an employee management system created to keep track of employees.
 
 ### Dependencies:
 asdasd

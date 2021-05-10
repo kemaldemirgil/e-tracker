@@ -189,11 +189,15 @@ const addE = () => {
             name: 'firstName',
             type: 'input',
             message: "What is the employee's first name?".green,
+            validate: (value) => {if (value){return true} else 
+            {return console.log("Please enter a valid first name".red.dim)}}
         },
         {
             name: 'lastName',
             type: 'input',
             message: "What is the employee's last name?".green,
+            validate: (value) => {if (value){return true} else 
+            {return console.log("Please enter a valid last name".red.dim)}}
         },
     ]).then(answer => {
         const newEmployeeData = [answer.firstName, answer.lastName]
@@ -245,7 +249,8 @@ const addD = () => {
             name: "newDepartment",
             type: "input",
             message: "Please enter a new Department...".green,
-            // validate:
+            validate: (value) => {if (value){return true} else 
+            {return console.log("Please enter a valid department name".red.dim)}}
         }
     ]).then((answer) => {
         connection.query("INSERT INTO department (department_name) VALUES (?)", answer.newDepartment, (err, res) => {
@@ -284,13 +289,15 @@ const addR = () => {
                     name: "roleName",
                     type: "input",
                     message: "What is the name of the role?".green,
-                //  validate:
+                    validate: (value) => {if (value){return true} else 
+                    {return console.log("Please enter a valid role".red.dim)}}
                 },
                 {
                     name: "roleSalary",
                     type: "input",
                     message: "What is the salary of the role?".green,
-                //  validate:
+                    validate: (value) => {if (value){return true} else 
+                    {return console.log("Please enter a valid salary".red.dim)}}
                 }
             ]).then((answer) => {
                 let departmentId;

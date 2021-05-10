@@ -4,6 +4,7 @@ const inquirer = require("inquirer");
 const cTable = require("console.table");
 const figlet = require('figlet');
 const colors = require('colors');
+const emoji = require("node-emoji");
 
 // Connection
 const connection = mysql.createConnection({
@@ -18,7 +19,7 @@ const start = () => {
     inquirer.prompt([
         {
             type: "list",
-            message: "What would you like to do?".green,
+            message: "What would you like to do?\n".green,
             name: "menu",
             choices: [
                 "View all employees".yellow,
@@ -91,7 +92,7 @@ const start = () => {
             console.log(figlet.textSync(" THANKS   FOR   USING ").rainbow);
             console.log(figlet.textSync("       E - T R A C K E R        ").rainbow);
             console.log("                                                                                   " + "Created By: Kemal Demirgil".brightGreen)
-            console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->".rainbow);
+            console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->\n\n".rainbow);
             connection.end();
         }     
     })
@@ -524,8 +525,7 @@ connection.connect((err) => {
         width: 200,
         whitespaceBreak: true
     }).gray);
-    console.log("                                                                                   " + "Created By: Kemal Demirgil".brightGreen)
-    console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->".rainbow);
+    console.log("Made with", emoji.get('heart') , " &", emoji.get('peace_symbol') , "                                                             ".brightWhite + "Created By: Kemal Demirgil".brightGreen)
+    console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->\n\n".rainbow);
     start();
 });
-  

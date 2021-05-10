@@ -504,8 +504,7 @@ const deleteR = () => {
     })
 }
 
-
-
+// Connection Listener
 connection.connect((err) => {
     if (err) throw err;
     // console.log(`connected as id ${connection.threadId}\n`);

@@ -1,7 +1,11 @@
+// Init
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const cTable = require("console.table");
+const figlet = require('figlet');
+const colors = require('colors');
 
+// Connection
 const connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
@@ -9,83 +13,90 @@ const connection = mysql.createConnection({
     password: '2930788',
     database: 'etrackerdb',
 });
-
+// Questions
 const start = () => {
     inquirer.prompt([
         {
             type: "list",
-            message: "What would you like to do?",
+            message: "What would you like to do?".green,
             name: "menu",
             choices: [
-                "View all employees",
-                "View all departments",
-                "View all roles",
-                "View all employees by manager",
-                "View the total utilized budget of a department",
-                "Add employee",
-                "Add department",
-                "Add role",
-                "Update employee role",
-                "Update employee manager",
-                "Delete employee",
-                "Delete department",
-                "Delete role",
-                "End"
+                "View all employees".yellow,
+                "View all departments".yellow,
+                "View all roles".yellow,
+                "View all employees by manager".yellow,
+                "View the total utilized budget of a department".yellow,
+                "Add employee".cyan,
+                "Add department".cyan,
+                "Add role".cyan,
+                "Update employee role".magenta,
+                "Update employee manager".magenta,
+                "Delete employee".red,
+                "Delete department".red,
+                "Delete role".red,
+                "End".brightRed
             ]
         }
     ])
+    // CRUD
     .then((response) => {
         switch (response.menu) {
-        ////////
-        case "View all employees" :
+        // View
+        case "View all employees".yellow :
             viewE();
             break;
-        case "View all departments" :
+        case "View all departments".yellow :
             viewD();
             break;
-        case "View all roles" :
+        case "View all roles".yellow :
             viewR();
             break;        
-        case "View all employees by manager" :
+        case "View all employees by manager".yellow :
             viewEM();
             break;
-        case "View the total utilized budget of a department" :
+        case "View the total utilized budget of a department".yellow :
             viewTB();
             break;
-        ////////                
-        case "Add employee" :
+        // Add
+        case "Add employee".cyan :
             addE();
             break;
-        case "Add department" :
+        case "Add department".cyan :
             addD();
             break;    
-        case "Add role" :
+        case "Add role".cyan :
             addR();
             break;
-        //////// 
-        case "Update employee role" :
+        // Update
+        case "Update employee role".magenta :
             updateER();
             break;                
-        case "Update employee manager" :
+        case "Update employee manager".magenta :
             updateEM();
-            break;                
-        case "Delete employee" :
+            break;
+        // Delete 
+        case "Delete employee".red :
             deleteE();
             break;
-        case "Delete department" :
+        case "Delete department".red :
             deleteD();
             break;
-        case "Delete role" :
+        case "Delete role".red :
             deleteR();
             break;
         default :
-            console.log("Thanks for using E-Tracker!");
+            // Stop application...
+            console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->".rainbow);
+            console.log("                                                                                   ");
+            console.log(figlet.textSync(" THANKS   FOR   USING ").rainbow);
+            console.log(figlet.textSync("       E - T R A C K E R        ").rainbow);
+            console.log("                                                                                   " + "Created By: Kemal Demirgil".brightGreen)
+            console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->".rainbow);
             connection.end();
-            // end
         }     
     })
 }
-
+// Viewing All Employees
 const viewE = () => {
     const employeeArray = [];
     connection.query(
@@ -107,7 +118,15 @@ const viewE = () => {
         res.forEach(({ employee_id, first_name, last_name, title, department_name, salary, Manager_Name }) => {
             employeeArray.push([employee_id, first_name, last_name, title, department_name, salary, Manager_Name]);
         });
-        console.table(["ID", "First Name", "Last Name", "Title", "Department", "Salary", "Manager"], employeeArray);
+        console.table([
+        "ID".brightMagenta, 
+        "First Name".brightMagenta, 
+        "Last Name".brightMagenta, 
+        "Title".brightMagenta, 
+        "Department".brightMagenta, 
+        "Salary".brightMagenta, 
+        "Manager".brightMagenta
+        ], employeeArray);
         start();
     });
 }
@@ -169,12 +188,12 @@ const addE = () => {
         {
             name: 'firstName',
             type: 'input',
-            message: "What is the employee's first name?",
+            message: "What is the employee's first name?".green,
         },
         {
             name: 'lastName',
             type: 'input',
-            message: "What is the employee's last name?",
+            message: "What is the employee's last name?".green,
         },
     ]).then(answer => {
         const newEmployeeData = [answer.firstName, answer.lastName]
@@ -185,7 +204,7 @@ const addE = () => {
                 {
                     name: 'role',
                     type: 'list',
-                    message: "What is the employee's role?",
+                    message: "What is the employee's role?".green,
                     choices: roles
                 }
             ]).then(element => {
@@ -198,7 +217,7 @@ const addE = () => {
                         {
                             type: "list",
                             name: "manager",
-                            message: "Who is the manager of this employee?",
+                            message: "Who is the manager of this employee?".green,
                             choices: managers
                         }
                     ]).then(element => {
@@ -208,7 +227,7 @@ const addE = () => {
                             `INSERT INTO employee (first_name, last_name, role_id, manager_id)
                             VALUES (?, ?, ?, ?)`, newEmployeeData, (err) => {
                                 if (err) throw err;
-                                console.log("Employee has been added.");
+                                console.log("Employee has been added...".brightGreen);
                                 viewE();
                             }
                         )
@@ -225,13 +244,13 @@ const addD = () => {
         {
             name: "newDepartment",
             type: "input",
-            message: "Please enter a new Department...",
+            message: "Please enter a new Department...".green,
             // validate:
         }
     ]).then((answer) => {
         connection.query("INSERT INTO department (department_name) VALUES (?)", answer.newDepartment, (err, res) => {
             if (err) throw err;
-            console.log("Department added...")
+            console.log("Department added...".brightGreen)
             viewD();
         })
     })
@@ -249,7 +268,7 @@ const addR = () => {
             {
                 name: "departmentName",
                 type: "list",
-                message: "Which department does this role belong to?",
+                message: "Which department does this role belong to?".green,
                 choices: dNames
             }
         ]).then((answer) => {
@@ -264,13 +283,13 @@ const addR = () => {
                 {
                     name: "roleName",
                     type: "input",
-                    message: "What is the name of the role?",
+                    message: "What is the name of the role?".green,
                 //  validate:
                 },
                 {
                     name: "roleSalary",
                     type: "input",
-                    message: "What is the salary of the role?",
+                    message: "What is the salary of the role?".green,
                 //  validate:
                 }
             ]).then((answer) => {
@@ -284,7 +303,7 @@ const addR = () => {
                     `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`,
                     [answer.roleName, answer.roleSalary, departmentId], (err) => {
                     if (err) throw err;
-                    console.log("Role has been added.");
+                    console.log("Role has been added...".brightGreen);
                     viewR();
                 });  
             });
@@ -314,13 +333,13 @@ const updateER = () => {
                 {
                     name: "selectedEmployee",
                     type: "list",
-                    message: "Please select the employee with the new role...",
+                    message: "Please select the employee with the new role...".green,
                     choices: employeeNames
                 },
                 {
                     name: "selectedRole",
                     type: "list",
-                    message: "What is their new role?",
+                    message: "What is their new role?".green,
                     choices: roles
                 }
             ]).then((answer) => {
@@ -338,7 +357,7 @@ const updateER = () => {
                 });
                 connection.query(`UPDATE employee SET employee.role_id = ? WHERE employee.employee_id = ?`, [newTitleId, employeeId], (err) => {
                     if (err) throw err;
-                    console.log("Employee updated...");
+                    console.log("Employee updated...".brightGreen);
                     start()
                 });
             });
@@ -363,13 +382,13 @@ const updateEM = () => {
             {
                 name: "selectedEmployee",
                 type: "list",
-                message: "Which employee has a new manager?",
+                message: "Which employee has a new manager?".green,
                 choices: employeeNames
             },
             {
                 name: "selectedManager",
                 type: "list",
-                message: "Who is the employee's new manager?",
+                message: "Who is the employee's new manager?".green,
                 choices: employeeNames
             }
         ]).then((answer) => {
@@ -384,12 +403,12 @@ const updateEM = () => {
                 }
             });
             if (answer.selectedEmployee === answer.selectedManager) {
-                console.log("INVALID MANAGER SELECTION");
+                console.log("INVALID MANAGER SELECTION".brightRed);
                 start();
             } else {
                 connection.query(`UPDATE employee SET employee.manager_id = ? WHERE employee.employee_id = ?`, [managerId, employeeId], (err) => {
                     if (err) throw err;
-                    console.log("Employee manager updated...");
+                    console.log("Employee manager updated...".brightGreen);
                     start();
                 })
             }
@@ -405,7 +424,7 @@ const deleteE = () => {
         {
             name: "removeQuestion",
             type: "rawlist",
-            message: "Please enter the first name of the employee you would like to remove...",
+            message: "Please enter the first name of the employee you would like to remove...".green,
             choices: () => {
                 let deleteArray = [];
                 for (var i = 0; i < res.length; i++) {
@@ -419,7 +438,7 @@ const deleteE = () => {
             connection.query("DELETE FROM employee WHERE first_name = ?", [answer.removeQuestion],
                 (err) => {
                 if (err) throw err;
-                console.log("Employee removed...");
+                console.log("Employee removed...".brightGreen);
                 start();
                 }
             );
@@ -437,7 +456,7 @@ const deleteD = () => {
             {
                 name: "selectedDepartment",
                 type: "list",
-                message: "Which department would you like to delete?",
+                message: "Which department would you like to delete?".green,
                 choices: departmentNames
             }
         ]).then((answer) => {
@@ -449,7 +468,7 @@ const deleteD = () => {
             });
             connection.query(`DELETE FROM department WHERE department.department_id = ?`, [departmentId], (err) => {
                 if (err) throw err;
-                console.log("Department deleted.");
+                console.log("Department deleted...".brightGreen);
                 viewD();
             })
         })
@@ -466,7 +485,7 @@ const deleteR = () => {
             {
                 name: "selectedRole",
                 type: "list",
-                message: "Which role would you like to delete?",
+                message: "Which role would you like to delete?".green,
                 choices: roleNames
             }
         ]).then((answer) => {
@@ -478,7 +497,7 @@ const deleteR = () => {
             });
             connection.query(`DELETE FROM role WHERE role.role_id = ?`, [roleId], (err) => {
                 if (err) throw err;
-                console.log("Role deleted.");
+                console.log("Role deleted...".brightGreen);
                 viewR();
             })
         })
@@ -490,6 +509,17 @@ const deleteR = () => {
 connection.connect((err) => {
     if (err) throw err;
     // console.log(`connected as id ${connection.threadId}\n`);
+    console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->".rainbow);
+    console.log("                                                                                   ");
+    console.log(figlet.textSync(" E - T R A C K E R ", {
+        font: 'ANSI Shadow',
+        horizontalLayout: 'default',
+        verticalLayout: 'default',
+        width: 200,
+        whitespaceBreak: true
+    }).gray);
+    console.log("                                                                                   " + "Created By: Kemal Demirgil".brightGreen)
+    console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->".rainbow);
     start();
 });
   

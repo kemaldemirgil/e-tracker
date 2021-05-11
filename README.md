@@ -46,7 +46,11 @@ Menu
 ![](/images/menu.gif)
 
 ## Installation & Dependencies:
-Please run;
+First, please clone this repo:
+```bash
+git clone https://github.com/kemaldemirgil/e-tracker
+```
+Secondly, simply run:
 ```bash
 npm install
 ```

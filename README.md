@@ -50,7 +50,7 @@ Please run;
 ```bash
 npm install
 ```
-to install dependencies and to create `package.json`
+to install the dependencies.
 
 Dependencies    
 :-------------------------:
@@ -70,7 +70,7 @@ View All Roles             |  View All Departments     |  View Total Budget For 
 
 
 ## Improvements:
-Unfortunately, this isn't the perfect "bug free" application, it has some issues with it but can be solved with some more extra time spent on it. Besides that, for future improvement, a lot more options can be added for example; grouping multiple employees and doing `CRUD` operations on them, creating a schedule for each employee, adding a *first day* date for each employee, adding an address input for each employee and much more!
+Unfortunately, this isn't the perfect *bug free* application, it has some issues with it but can be solved with some more extra time spent on it. Besides that, for future improvement, a lot more options can be added for example; grouping multiple employees and doing `CRUD` operations on them, creating a schedule for each employee, adding a *first day* date for each employee, adding an address input for each employee and much more!
 
 > Please contact me for any contributions or any input about this application, I would love to get some feedback and improve this simple project.
 
@@ -83,7 +83,3 @@ Unfortunately, this isn't the perfect "bug free" application, it has some issues
 ## License:
 Copyright © Kemal Demirgil. All rights reserved.
 Licensed under the [MIT](https://github.com/kemaldemirgil/e-tracker/blob/main/LICENSE) license.
-
-
-
-

@@ -89,8 +89,8 @@ const start = () => {
             // Stop application...
             console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->".rainbow);
             console.log("                                                                                   ");
-            console.log(figlet.textSync(" THANKS   FOR   USING ").rainbow);
-            console.log(figlet.textSync("       E - T R A C K E R        ").rainbow);
+            console.log(figlet.textSync(" THANKS   FOR   USING ").brightGreen);
+            console.log(figlet.textSync("       E - T R A C K E R        ").brightMagenta);
             console.log("                                                                                   " + "Created By: Kemal Demirgil".brightGreen)
             console.log("<-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><-><->\n\n".rainbow);
             connection.end();

@@ -1,10 +1,10 @@
 // Init
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-const cTable = require("console.table");
 const figlet = require('figlet');
 const colors = require('colors');
 const emoji = require("node-emoji");
+const {printTable} = require("console-table-printer");
 
 // Connection
 const connection = mysql.createConnection({
@@ -99,16 +99,15 @@ const start = () => {
 }
 // Viewing All Employees
 const viewE = () => {
-    const employeeArray = [];
     connection.query(
         `SELECT 
-        a.employee_id,
-        a.first_name,
-        a.last_name,
-        role.title,
-        department.department_name,
-        role.salary,
-        concat(b.first_name, ' ',b.last_name) as 'Manager_Name' 
+        a.employee_id AS Employee,
+        a.first_name AS First,
+        a.last_name AS Last,
+        role.title AS Title,
+        department.department_name AS Department,
+        role.salary AS Salary,
+        concat(b.first_name, ' ',b.last_name) as Manager
         FROM employee a 
         LEFT OUTER JOIN employee b ON a.manager_id = b.employee_id 
         INNER JOIN role ON (role.role_id = a.role_id) 
@@ -116,18 +115,7 @@ const viewE = () => {
         ORDER BY a.employee_id;
         `, (err, res) => {
         if (err) throw err;
-        res.forEach(({ employee_id, first_name, last_name, title, department_name, salary, Manager_Name }) => {
-            employeeArray.push([employee_id, first_name, last_name, title, department_name, salary, Manager_Name]);
-        });
-        console.table([
-        "ID".brightMagenta, 
-        "First Name".brightMagenta, 
-        "Last Name".brightMagenta, 
-        "Title".brightMagenta, 
-        "Department".brightMagenta, 
-        "Salary".brightMagenta, 
-        "Manager".brightMagenta
-        ], employeeArray);
+        printTable(res);
         start();
     });
 }
@@ -136,7 +124,7 @@ const viewE = () => {
 const viewD = () => {
     connection.query("SELECT * FROM department;", (err, res) => {
         if (err) throw err;
-        console.table(res);
+        printTable(res);
         start();
     })
 }
@@ -145,7 +133,7 @@ const viewD = () => {
 const viewR = () => {
     connection.query("SELECT title FROM role;", (err, res) => {
         if (err) throw err;
-        console.table(res);
+        printTable(res);
         start();
     })
 }
@@ -154,15 +142,15 @@ const viewR = () => {
 const viewEM = () => {
     connection.query(
         `SELECT 
-        a.first_name,
-        a.last_name,
-        concat(b.first_name, ' ',b.last_name) as 'Manager_Name' 
+        a.first_name AS First,
+        a.last_name AS Last,
+        concat(b.first_name, ' ',b.last_name) as Manager
         FROM employee a 
         LEFT OUTER JOIN employee b ON a.manager_id = b.employee_id 
-        ORDER BY Manager_Name;
+        ORDER BY Manager;
         `, (err, res) => {
         if (err) throw err;
-        console.table(res);
+        printTable(res);
         start();
     })
 }
@@ -170,15 +158,15 @@ const viewEM = () => {
 // View the total utilized budget of a department
 const viewTB = () => {
     connection.query(
-    `SELECT role.department_id AS id, 
-    department.department_name AS department,
-    SUM(salary) AS budget
+    `SELECT role.department_id AS ID, 
+    department.department_name AS Department,
+    SUM(salary) AS Budget
     FROM  role  
     INNER JOIN department ON role.department_id = department.department_id 
     GROUP BY  role.department_id`, 
     (err, res) => {
         if (err) throw err;
-        console.table(res);
+        printTable(res);
         start();
     })
 }

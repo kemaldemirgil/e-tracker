@@ -145,7 +145,7 @@ const viewEM = () => {
         a.first_name AS First,
         a.last_name AS Last,
         concat(b.first_name, ' ',b.last_name) as Manager
-        FROM employee a 
+        FROM employee a
         LEFT OUTER JOIN employee b ON a.manager_id = b.employee_id 
         ORDER BY Manager;
         `, (err, res) => {
